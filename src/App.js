@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import { useForm } from "react-hook-form";
 
 function App() {
 
@@ -8,17 +9,22 @@ function App() {
     const [counterThree, setCounterThree] = React.useState(0);
     const [counterFour, setCounterFour] = React.useState(0);
 
+    const {register, handleSubmit} = useForm();
+
     function resetButton () {
-        setCounter(0)
-        setCounterTwo(0)
-        setCounterThree(0)
-        setCounterFour(0)
+        setCounter(0);
+        setCounterTwo(0);
+        setCounterThree(0);
+        setCounterFour(0);
     }
 
+    function submitData (data) {
+        console.log(data)
+    }
 
   return (
     <>
-      <h1>Fruitmand bezorgservice</h1>
+      <h1>Fruitmand bezorgservice</h1>️
         <fieldset>
             <h3>Aardbeien</h3>
             <button
@@ -93,6 +99,57 @@ function App() {
         onClick={resetButton}
         > Reset
         </button>
+
+        <form onSubmit={handleSubmit(submitData)}>
+            <label htmlFor="name">Voornaam</label>
+            <input name="name" id="name"
+                   ref={register({required: true})}
+            />
+
+            <label htmlFor="surName">Achternaam</label>
+            <input name="surName" id="surName"
+                   ref={register({required: true})}
+            />
+
+            <label htmlFor="age">Leeftijd</label>
+            <input name="age" id="age"
+                   ref={register({required: true, min: 18})}
+            />
+
+            <label htmlFor="postalCode">Postcode</label>
+            <input name="postalCode" id="postalCode"
+                   ref={register({required: true})}
+            />
+
+            <label htmlFor="number">Huisnummer zonder toevoeging</label>
+            <input name="number" id="number"
+                   ref={register({required: true})}
+            />
+
+            <p>Bezorgfrequentie</p>
+            <label htmlFor="radioButton">Iedere week</label>
+            <input type="radio" name="radioButton" id="radioButton" value="everyWeek" ref={register}/>
+
+            <label htmlFor="radioButtonFour">Om de week</label>
+            <input type="radio" name="radioButton" id="radioButtonFour" value="weekly" ref={register}/>
+
+            <label htmlFor="radioButtonTwo">Iedere maand</label>
+            <input type="radio" name="radioButton" id="radioButtonTwo" value="monthly" ref={register}/>
+
+            <label htmlFor="radioButtonThree">Anders</label>
+            <input type="radio" name="radioButton" id="radioButtonThree" value="different" ref={register}/>
+
+            <label htmlFor="textField">Opmerkingen</label>
+            <textarea name="textField" rows="4" cols="40" id="textField" />
+
+            <label htmlFor="terms">
+                <input type="checkbox" id="terms" name="term"
+
+                />
+            </label>
+
+            <button type="submit">Verzend</button>
+        </form>
     </>
   );
 }
