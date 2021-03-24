@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import { useForm } from "react-hook-form";
 
+
 function App() {
 
     const [counter, setCounter] = React.useState(0);
@@ -23,27 +24,26 @@ function App() {
     }
 
     function submitData (data) {
-        console.log(data, counter, counterTwo, counterThree, counterFour)
+        console.log(data, counter, counterTwo, counterThree, counterFour);
     }
 
   return (
     <>
       <h1>Fruitmand bezorgservice</h1>️
+
         <fieldset>
             <h3>Aardbeien</h3>
             <button
-                name="strawBerrieMin"
-                ref={register}
+                name="increaseButton"
                 className="increaseButton"
                 type="button"
                 value={counter}
-                onClick={(e) => setCounter(counter - 1)}
+                onClick={(e) => (counter > 0 ? setCounter(counter - 1) : setCounter(0))}
             > -
         </button>
             <h3>{counter}</h3>
             <button
-                name="strawBerriePlus"
-                ref={register}
+                name="decreaseButton"
                 className="decreaseButton"
                 type="button"
                 value={counter}
@@ -58,7 +58,7 @@ function App() {
                 className="increaseButtonTwo"
                 type="button"
                 value={counterTwo}
-                onClick={(e) => setCounterTwo(counterTwo - 1)}
+                onClick={(e) => (counterTwo > 0 ? setCounterTwo(counterTwo - 1) : setCounterTwo(0))}
             > -
             </button>
             <h3>{counterTwo}</h3>
@@ -78,7 +78,7 @@ function App() {
                 className="increaseButtonThree"
                 type="button"
                 value={counterThree}
-                onClick={(e) => setCounterThree(counterThree - 1)}
+                onClick={(e) => (counterThree > 0 ? setCounterThree(counterThree - 1) : setCounterThree(0))}
             > -
             </button>
             <h3>{counterThree}</h3>
@@ -98,7 +98,7 @@ function App() {
                 className="increaseButtonFour"
                 type="button"
                 value={counterFour}
-                onClick={(e) => setCounterFour(counterFour - 1)}
+                onClick={(e) => (counterFour > 0 ? setCounterFour(counterFour - 1) : setCounterFour(0))}
             > -
             </button>
             <h3>{counterFour}</h3>
@@ -139,9 +139,19 @@ function App() {
 
             <label htmlFor="postalCode">Postcode</label>
             <input name="postalCode" id="postalCode"
-                   ref={register({required: true})}
+                   ref={register(
+                       {
+                       required: {
+                           value: true,
+                           message: "Postcode verplicht"
+                       },
+                       pattern: {
+                           value: /^[1-9][0-9]{3} ?(?!sa|sd|ss)[a-z]{2}$/i,
+                           message: "Postcode onjuist."
+                       }
+                   })}
             />
-            {errors.postalCode && <p>Postcode is verplicht.</p>}
+            {errors.postalCode && <p>{errors.postalCode.message}</p>}
 
             <label htmlFor="number">Huisnummer zonder toevoeging</label>
             <input name="number" id="number"
