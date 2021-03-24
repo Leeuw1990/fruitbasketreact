@@ -9,7 +9,11 @@ function App() {
     const [counterThree, setCounterThree] = React.useState(0);
     const [counterFour, setCounterFour] = React.useState(0);
 
-    const {register, handleSubmit, errors} = useForm();
+    const {register, handleSubmit, errors, watch} = useForm({
+        mode: "onChange"
+    });
+
+    const selectDifferent = watch("radioButton");
 
     function resetButton () {
         setCounter(0);
@@ -19,7 +23,7 @@ function App() {
     }
 
     function submitData (data) {
-        console.log(data)
+        console.log(data, counter, counterTwo, counterThree, counterFour)
     }
 
   return (
@@ -28,68 +32,82 @@ function App() {
         <fieldset>
             <h3>Aardbeien</h3>
             <button
+                name="strawBerrieMin"
+                ref={register}
                 className="increaseButton"
                 type="button"
                 value={counter}
                 onClick={(e) => setCounter(counter - 1)}
             > -
         </button>
-            <h3 ref={register}>{counter}</h3>
-            <button className="decreaseButton"
-                    type="button"
-                    value={counter}
-                    onClick={(e) => setCounter(counter + 1)}
+            <h3>{counter}</h3>
+            <button
+                name="strawBerriePlus"
+                ref={register}
+                className="decreaseButton"
+                type="button"
+                value={counter}
+                onClick={(e) => setCounter(counter + 1)}
             > +
         </button>
         </fieldset>
         <fieldset>
             <h3>Bananen</h3>
             <button
+                name="bananaMin"
                 className="increaseButtonTwo"
                 type="button"
                 value={counterTwo}
                 onClick={(e) => setCounterTwo(counterTwo - 1)}
             > -
             </button>
-            <h3 ref={register}>{counterTwo}</h3>
-            <button className="decreaseButtonTwo"
-                    type="button"
-                    value={counterTwo}
-                    onClick={(e) => setCounterTwo(counterTwo + 1)}
+            <h3>{counterTwo}</h3>
+            <button
+                name="bananaMin"
+                className="decreaseButtonTwo"
+                type="button"
+                value={counterTwo}
+                onClick={(e) => setCounterTwo(counterTwo + 1)}
             > +
             </button>
         </fieldset>
         <fieldset>
             <h3>Appels</h3>
             <button
+                name="appleMin"
                 className="increaseButtonThree"
                 type="button"
                 value={counterThree}
                 onClick={(e) => setCounterThree(counterThree - 1)}
             > -
             </button>
-            <h3 ref={register}>{counterThree}</h3>
-            <button className="decreaseButtonThree"
-                    type="button"
-                    value={counterThree}
-                    onClick={(e) => setCounterThree(counterThree + 1)}
+            <h3>{counterThree}</h3>
+            <button
+                name="bananaPlus"
+                className="decreaseButtonThree"
+                type="button"
+                value={counterThree}
+                onClick={(e) => setCounterThree(counterThree + 1)}
             > +
             </button>
         </fieldset>
         <fieldset>
             <h3>Kiwi's</h3>
             <button
+                name="kiwiMin"
                 className="increaseButtonFour"
                 type="button"
                 value={counterFour}
                 onClick={(e) => setCounterFour(counterFour - 1)}
             > -
             </button>
-            <h3 ref={register}>{counterFour}</h3>
-            <button className="decreaseButtonFour"
-                    type="button"
-                    value={counterFour}
-                    onClick={(e) => setCounterFour(counterFour + 1)}
+            <h3>{counterFour}</h3>
+            <button
+                name="kiwiPlus"
+                className="decreaseButtonFour"
+                type="button"
+                value={counterFour}
+                onClick={(e) => setCounterFour(counterFour + 1)}
             > +
             </button>
         </fieldset>
@@ -105,31 +123,31 @@ function App() {
             <input name="name" id="name"
                    ref={register({required: true})}
             />
-            {errors.name && <p>invoer voornaam is verplicht.</p>}
+            {errors.name && <p>Voornaam is verplicht.</p>}
 
             <label htmlFor="surName">Achternaam</label>
             <input name="surName" id="surName"
                    ref={register({required: true})}
             />
-            {errors.surName && <p>Invoer achternaam is verplicht.</p>}
+            {errors.surName && <p>Achternaam is verplicht.</p>}
 
             <label htmlFor="age">Leeftijd</label>
             <input name="age" id="age"
                    ref={register({required: true, min: 18})}
             />
-            {errors.age && <p>Invoer leeftijd is verplicht.</p>}
+            {errors.age && <p>Leeftijd is verplicht.</p>}
 
             <label htmlFor="postalCode">Postcode</label>
             <input name="postalCode" id="postalCode"
                    ref={register({required: true})}
             />
-            {errors.postalCode && <p>Invoer postcode is verplicht.</p>}
+            {errors.postalCode && <p>Postcode is verplicht.</p>}
 
             <label htmlFor="number">Huisnummer zonder toevoeging</label>
             <input name="number" id="number"
                    ref={register({required: true})}
             />
-            {errors.surName && <p>Invoer huisnummer is verplicht.</p>}
+            {errors.surName && <p>Huisnummer is verplicht.</p>}
 
             <p>Bezorgfrequentie</p>
             <label htmlFor="radioButton">Iedere week</label>
@@ -144,10 +162,16 @@ function App() {
             <label htmlFor="radioButtonThree">Anders</label>
             <input type="radio" name="radioButton" id="radioButtonThree" value="different" ref={register}/>
 
+            {selectDifferent === "different" && (
+            <input
+                name="different" id="different"
+                ref={register({required: true})}
+                />)}
+
             <label htmlFor="textField">Opmerkingen</label>
             <textarea name="textField" rows="4" cols="40" id="textField" ref={register}/>
 
-            <label htmlFor="terms">
+            <label htmlFor="terms">Ga akkoord met de algemene voorwaarden.
                 <input type="checkbox" id="terms" name="term"
                        ref={register({required: true})}
                 />
